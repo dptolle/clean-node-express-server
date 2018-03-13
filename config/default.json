@@ -1,0 +1,9 @@
+{
+    "server": {
+        "port": 3000,
+        "logLevel":"trace"
+    },
+    "dataStore": {
+        "connectionString": "mongodb://localhost:27017/nodeplayground"
+    }
+}
