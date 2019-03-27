@@ -1,0 +1,365 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the api of the MiBi-Portal server",
+    "version": "1.0.0",
+    "title": "MiBi-Portal Server",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "mibi-portal@bfr.bund.de"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "mibi-portal.bfr.bund.de",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Util",
+      "description": "Access to Server Utiliy functions"
+    },
+    {
+      "name": "Sample",
+      "description": "Operations on samples",
+      "externalDocs": {
+        "description": "Find out more about our sample services",
+        "url": "https://mibi-portal.bfr.bund.de/content/faq"
+      }
+    },
+    {
+      "name": "User",
+      "description": "Operations on users",
+      "externalDocs": {
+        "description": "Find out more about user services",
+        "url": "https://mibi-portal.bfr.bund.de/content/faq"
+      }
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "access_token"
+    }
+  },
+  "paths": {
+    "/util/system-info": {
+      "get": {
+        "tags": [
+          "Util"
+        ],
+        "summary": "Retrieve server information",
+        "description": "Returns current server version number as well as the date of the last server update.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SystemInformationResponse"
+            }
+          },
+          "404": {
+            "description": "system-Info not found"
+          },
+          "500": {
+            "$ref": "#/responses/Standard500ErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "Standard500ErrorResponse": {
+      "description": "An unexpected error occured.",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  },
+  "parameters": {
+    "token": {
+      "name": "token",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The supplied activation token"
+    },
+    "sampleSet": {
+      "name": "sampleSet",
+      "in": "body",
+      "description": "A set of sample",
+      "required": true,
+      "schema": {
+        "$ref": "#/definitions/ValidationRequest"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SystemInformationResponse": {
+      "type": "object",
+      "required": [
+        "version",
+        "lastChange"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Server version number"
+        },
+        "lastChange": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of last code change"
+        }
+      }
+    },
+    "ValidationRequest": {
+      "type": "object",
+      "required": [
+        "data",
+        "meta"
+      ],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SampleData"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/ValidationRequestMetaInformation"
+        }
+      }
+    },
+    "ValidationRequestMetaInformation": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/StateShort"
+        },
+        "nrl": {
+          "type": "string"
+        }
+      }
+    },
+    "Institute": {
+      "type": "object",
+      "required": [
+        "name",
+        "_id",
+        "short",
+        "city",
+        "zip"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        },
+        "short": {
+          "$ref": "#/definitions/StateShort"
+        },
+        "addendum": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string",
+          "pattern": "[0-9]{5}",
+          "minLength": 5,
+          "maxLength": 5
+        },
+        "phone": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "email": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ValidationResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        },
+        "errors": {
+          "type": "object"
+        },
+        "corrections": {
+          "type": "object"
+        },
+        "edits": {
+          "type": "object"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "StateShort": {
+      "type": "string",
+      "pattern": "[A-Z]{2}",
+      "minLength": 2,
+      "maxLength": 2
+    },
+    "SampleData": {
+      "type": "object",
+      "required": [
+        "sample_id",
+        "sample_id_avv",
+        "pathogen_adv",
+        "pathogen_text",
+        "sampling_date",
+        "isolation_date",
+        "sampling_location_adv",
+        "sampling_location_zip",
+        "sampling_location_text",
+        "topic_adv",
+        "matrix_adv",
+        "matrix_text",
+        "process_state_adv",
+        "sampling_reason_adv",
+        "sampling_reason_text",
+        "operations_mode_adv",
+        "operations_mode_text",
+        "vvvo",
+        "comment"
+      ],
+      "properties": {
+        "sample_id": {
+          "type": "string"
+        },
+        "sample_id_avv": {
+          "type": "string"
+        },
+        "pathogen_adv": {
+          "type": "string"
+        },
+        "pathogen_text": {
+          "type": "string"
+        },
+        "sampling_date": {
+          "type": "string"
+        },
+        "isolation_date": {
+          "type": "string"
+        },
+        "sampling_location_adv": {
+          "type": "string"
+        },
+        "sampling_location_zip": {
+          "type": "string"
+        },
+        "sampling_location_text": {
+          "type": "string"
+        },
+        "topic_adv": {
+          "type": "string"
+        },
+        "matrix_adv": {
+          "type": "string"
+        },
+        "matrix_text": {
+          "type": "string"
+        },
+        "process_state_adv": {
+          "type": "string"
+        },
+        "sampling_reason_adv": {
+          "type": "string"
+        },
+        "sampling_reason_text": {
+          "type": "string"
+        },
+        "operations_mode_adv": {
+          "type": "string"
+        },
+        "operations_mode_text": {
+          "type": "string"
+        },
+        "vvvo": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "authorized": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about the MiBi-Portal",
+    "url": "https://mibi-portal.bfr.bund.de/content/faq"
+  }
+}

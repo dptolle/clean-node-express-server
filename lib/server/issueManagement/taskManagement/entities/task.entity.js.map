@@ -1,1 +1,0 @@
-{"version":3,"file":"task.entity.js","sourceRoot":"","sources":["../../../../../src/server/issueManagement/taskManagement/entities/task.entity.ts"],"names":[],"mappings":";;AAOA;CAKC;AAED,oBAA2B,KAAa;IACpC,MAAM,CAAC;QACH,OAAO,EAAE,IAAI,IAAI,EAAE;QACnB,IAAI,EAAE,KAAK;QACX,KAAK,EAAE,KAAK;QACZ,QAAQ,EAAE,CAAC;KACd,CAAA;AACL,CAAC;AAPD,gCAOC"}

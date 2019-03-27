@@ -1,9 +1,14 @@
 {
     "server": {
-        "port": "NODE_PORT",
-        "logLevel": "LOG_LEVEL"
+        "port": "APP_NODE_PORT",
+        "jwtSecret": "APP_JWT_SECRET",
+        "apiUrl": "APP_API_URL"
     },
     "dataStore": {
-        "connectionString": "DB_CONNECTION"
+        "connectionString": "APP_DB_CONNECTION"
+    },
+    "general": {
+        "contact": "APP_SUPPORT_CONTACT",
+        "logLevel": "APP_LOG_LEVEL"
     }
 }

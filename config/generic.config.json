@@ -1,0 +1,20 @@
+{
+    "application": {
+        "login": {
+            "threshold": 0,
+            "secondsDelay": 0
+          }
+    },
+    "server": {
+        "port": 3000,
+        "jwtSecret": "",
+        "apiUrl": ""
+    },
+    "dataStore": {
+        "connectionString": ""
+    },
+    "general":{
+        "contact": "",
+        "logLevel": "info"
+    }
+}
